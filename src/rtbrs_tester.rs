@@ -1,4 +1,6 @@
 use vst::plugin::{Category, Info, Plugin, HostCallback};
+use log::*;
+use std::fs::File;
 
 use crate::editor::Editor;
 
@@ -14,6 +16,20 @@ impl Default for RtbrsTester {
 
 impl Plugin for RtbrsTester {
     fn new(_host: HostCallback) -> Self {
+        // Set up a logger so we can see what's going on in the VST
+        let mut logger_config = simplelog::Config::default();
+        logger_config.time_format = Some("%H:%M:%S%.6f");
+
+        simplelog::CombinedLogger::init(
+            vec![
+                simplelog::WriteLogger::new(
+                    simplelog::LevelFilter::max(),
+                    logger_config,
+                    File::create("/tmp/plugin.log").unwrap()
+                ),
+            ]
+        ).unwrap();
+
         Self {
             editor: Editor::new(),
         }
