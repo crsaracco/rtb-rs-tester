@@ -1,5 +1,3 @@
-#![feature(uniform_paths)]
-
 extern crate vst;
 extern crate rtb_rs;
 extern crate log;

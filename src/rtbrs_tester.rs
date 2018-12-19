@@ -5,6 +5,7 @@ use std::fs::File;
 use crate::editor::Editor;
 
 pub struct RtbrsTester {
+    host: HostCallback,
     editor: Editor,
 }
 
@@ -15,7 +16,7 @@ impl Default for RtbrsTester {
 }
 
 impl Plugin for RtbrsTester {
-    fn new(_host: HostCallback) -> Self {
+    fn new(host: HostCallback) -> Self {
         // Set up a logger so we can see what's going on in the VST
         let mut logger_config = simplelog::Config::default();
         logger_config.time_format = Some("%H:%M:%S%.6f");
@@ -31,11 +32,13 @@ impl Plugin for RtbrsTester {
         ).unwrap();
 
         Self {
+            host,
             editor: Editor::new(),
         }
     }
 
     fn get_info(&self) -> Info {
+        info!("RtbrsTester::get_info()");
         Info {
             name: "rtbrs-tester".to_string(),
             vendor: "crsaracco".to_string(),
@@ -48,5 +51,17 @@ impl Plugin for RtbrsTester {
             initial_delay: 0,
             ..Info::default()
         }
+    }
+
+    fn init(&mut self) {
+        info!("RtbrsTester::init()");
+        info!("RtbrsTester::init() -- host VST version: {}", self.host.vst_version());
+    }
+
+    // TODO: return None if the editor couldn't be created
+    // (for example, if the connection to the X server couldn't be established)
+    fn get_editor(&mut self) -> Option<&mut vst::editor::Editor> {
+        info!("RtbrsTester::get_editor()");
+        Some(&mut self.editor)
     }
 }
