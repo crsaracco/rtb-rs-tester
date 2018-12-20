@@ -1,6 +1,6 @@
-use vst::plugin::{Category, Info, Plugin, HostCallback};
 use log::*;
 use std::fs::File;
+use vst::plugin::{Category, HostCallback, Info, Plugin};
 
 use crate::editor::Editor;
 
@@ -21,15 +21,12 @@ impl Plugin for RtbrsTester {
         let mut logger_config = simplelog::Config::default();
         logger_config.time_format = Some("%H:%M:%S%.6f");
 
-        simplelog::CombinedLogger::init(
-            vec![
-                simplelog::WriteLogger::new(
-                    simplelog::LevelFilter::max(),
-                    logger_config,
-                    File::create("/tmp/plugin.log").unwrap()
-                ),
-            ]
-        ).unwrap();
+        simplelog::CombinedLogger::init(vec![simplelog::WriteLogger::new(
+            simplelog::LevelFilter::max(),
+            logger_config,
+            File::create("/tmp/plugin.log").unwrap(),
+        )])
+        .unwrap();
 
         Self {
             host,
@@ -55,7 +52,10 @@ impl Plugin for RtbrsTester {
 
     fn init(&mut self) {
         info!("RtbrsTester::init()");
-        info!("RtbrsTester::init() -- host VST version: {}", self.host.vst_version());
+        info!(
+            "RtbrsTester::init() -- host VST version: {}",
+            self.host.vst_version()
+        );
     }
 
     // TODO: return None if the editor couldn't be created

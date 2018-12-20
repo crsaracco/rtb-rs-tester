@@ -1,30 +1,26 @@
+use log::*;
+use rtb_rs::platform;
 use rtb_rs::Window;
 use rtb_rs::WindowDimensions;
-use rtb_rs::platform;
 use std::ffi::c_void;
-use log::*;
 
 pub struct Editor {
     window: Option<Window>,
-
-    // TODO: move this stuff into the rtb_rs::Window struct, if they exist there.
+    window_dimensions: WindowDimensions,
     is_open: bool,
-    x: i32,
-    y: i32,
-    width: i32,
-    height: i32,
-    // End TODO
 }
 
 impl Editor {
     pub fn new() -> Self {
         Self {
             window: None,
+            window_dimensions: WindowDimensions {
+                width: 1000,
+                height: 1000,
+                x: 0,
+                y: 0,
+            },
             is_open: false,
-            x: 0,
-            y: 0,
-            width: 1000,
-            height: 1000,
         }
     }
 }
@@ -32,12 +28,18 @@ impl Editor {
 impl vst::editor::Editor for Editor {
     fn size(&self) -> (i32, i32) {
         info!("Editor::size()");
-        (self.width, self.height)
+        (
+            self.window_dimensions.width as i32,
+            self.window_dimensions.height as i32,
+        )
     }
 
     fn position(&self) -> (i32, i32) {
         info!("Editor::position()");
-        (self.x, self.y)
+        (
+            self.window_dimensions.x as i32,
+            self.window_dimensions.y as i32,
+        )
     }
 
     fn close(&mut self) {
@@ -49,13 +51,22 @@ impl vst::editor::Editor for Editor {
         info!("Editor::open()");
         self.is_open = true;
         let parent_id = parent as u32;
-        let window_dimensions = WindowDimensions {
-            width: 1000,
-            height: 1000,
-        };
-        let parent_window_handle: Option<platform::WindowHandle> = Some(platform::WindowHandle::new(parent_id));
+        let parent_window_handle: Option<platform::WindowHandle> =
+            Some(platform::WindowHandle::new(parent_id));
 
-        self.window = Some(Window::open_under(parent_window_handle, window_dimensions, "rtb-rs test window"));
+        // TODO: maybe need a `WindowDimensions::clone()`, or maybe I'm just doing it wrong.
+        let window_dimensions = WindowDimensions {
+            width: self.window_dimensions.width,
+            height: self.window_dimensions.height,
+            x: self.window_dimensions.x,
+            y: self.window_dimensions.y,
+        };
+
+        self.window = Some(Window::open_under(
+            parent_window_handle,
+            window_dimensions,
+            "rtb-rs test window",
+        ));
     }
 
     fn is_open(&mut self) -> bool {

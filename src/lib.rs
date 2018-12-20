@@ -1,11 +1,11 @@
-extern crate vst;
-extern crate rtb_rs;
 extern crate log;
+extern crate rtb_rs;
 extern crate simplelog;
+extern crate vst;
 
 use vst::plugin_main;
 
-mod rtbrs_tester;
 mod editor;
+mod rtbrs_tester;
 
 plugin_main!(rtbrs_tester::RtbrsTester);
