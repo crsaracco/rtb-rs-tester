@@ -1,10 +1,11 @@
 use rtb_rs::Window;
 use rtb_rs::WindowDimensions;
+use rtb_rs::platform;
 use std::ffi::c_void;
 use log::*;
 
 pub struct Editor {
-    window: Window,
+    window: Option<Window>,
 
     // TODO: move this stuff into the rtb_rs::Window struct, if they exist there.
     is_open: bool,
@@ -17,13 +18,8 @@ pub struct Editor {
 
 impl Editor {
     pub fn new() -> Self {
-        let window_dimensions = WindowDimensions {
-            width: 1000,
-            height: 1000,
-        };
-
         Self {
-            window: Window::open_under(None, window_dimensions, "rtb-rs test window"),
+            window: None,
             is_open: false,
             x: 0,
             y: 0,
@@ -52,8 +48,14 @@ impl vst::editor::Editor for Editor {
     fn open(&mut self, parent: *mut c_void) {
         info!("Editor::open()");
         self.is_open = true;
-        // TODO: need to separate open/open_under with actually opening/closing the window itself
-        // (right now open/open_under will create a new window every time)
+        let parent_id = parent as u32;
+        let window_dimensions = WindowDimensions {
+            width: 1000,
+            height: 1000,
+        };
+        let parent_window_handle: Option<platform::WindowHandle> = Some(platform::WindowHandle::new(parent_id));
+
+        self.window = Some(Window::open_under(parent_window_handle, window_dimensions, "rtb-rs test window"));
     }
 
     fn is_open(&mut self) -> bool {
