@@ -21,7 +21,7 @@ impl vst::editor::Editor for Editor {
     fn size(&self) -> (i32, i32) {
         info!("Editor::size()");
 
-        (1000, 1000)
+        (250, 250)
     }
 
     fn position(&self) -> (i32, i32) {

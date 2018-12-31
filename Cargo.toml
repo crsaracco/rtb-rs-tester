@@ -5,8 +5,10 @@ authors = ["Charles Saracco <crsaracco@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-vst = { path = "/home/crs/git/github/rust-vst/" }
-rtb-rs = { path = "/home/crs/git/github/rtb-rs/" }
+vst = { git = "https://github.com/rust-dsp/rust-vst.git" }
+rtb-rs = { git = "https://github.com/rust-dsp/rtb-rs.git" }
+#vst = { path = "/home/crs/git/github/rust-vst/" }
+#rtb-rs = { path = "/home/crs/git/github/rtb-rs/" }
 log = "0.4"
 simplelog = "^0.5.0"
 

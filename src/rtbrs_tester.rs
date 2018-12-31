@@ -61,7 +61,7 @@ impl Plugin for RtbrsTester {
     // TODO: return None if the editor couldn't be created
     // (for example, if the connection to the X server couldn't be established)
     fn get_editor(&mut self) -> Option<&mut vst::editor::Editor> {
-        info!("RtbrsTester::get_editor()");
+        //info!("RtbrsTester::get_editor()");
         Some(&mut self.editor)
     }
 }
