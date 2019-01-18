@@ -5,7 +5,7 @@ authors = ["Charles Saracco <crsaracco@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-vst = { git = "https://github.com/rust-dsp/rust-vst.git" }
+vst = { git = "https://github.com/crsaracco/rust-vst.git", branch = "open-editor-return-1-for-success" }
 rtb-rs = { git = "https://github.com/rust-dsp/rtb-rs.git" }
 #vst = { path = "/home/crs/git/github/rust-vst/" }
 #rtb-rs = { path = "/home/crs/git/github/rtb-rs/" }

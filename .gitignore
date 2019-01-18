@@ -1,5 +1,7 @@
 /target
 **/*.rs.bk
 
+# ignore Cargo.lock for libraries
+
 # clion stuff
 .idea/

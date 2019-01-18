@@ -35,7 +35,7 @@ impl vst::editor::Editor for Editor {
         self.is_open = false;
     }
 
-    fn open(&mut self, parent: *mut c_void) {
+    fn open(&mut self, parent: *mut c_void) -> bool {
         info!("Editor::open()");
         self.is_open = true;
 
@@ -45,6 +45,7 @@ impl vst::editor::Editor for Editor {
         };
 
         self.window = Some(Window::attach(parent, size, "derp"));
+        true
     }
 
     fn is_open(&mut self) -> bool {
