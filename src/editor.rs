@@ -44,7 +44,7 @@ impl vst::editor::Editor for Editor {
             height: 1000,
         };
 
-        self.window = Some(Window::attach(parent, size, "derp"));
+        self.window = Some(Window::attach(parent, size, "derp", asdf));
         true
     }
 
@@ -52,4 +52,8 @@ impl vst::editor::Editor for Editor {
         info!("Editor::is_open()");
         self.is_open
     }
+}
+
+fn asdf(event: crate::rtb_rs::Event) {
+    info!("Got event!");
 }

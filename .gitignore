@@ -2,6 +2,7 @@
 **/*.rs.bk
 
 # ignore Cargo.lock for libraries
+Cargo.lock
 
 # clion stuff
 .idea/
