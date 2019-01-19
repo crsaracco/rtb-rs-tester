@@ -3,6 +3,20 @@ use rtb_rs::platform;
 use rtb_rs::window::{Window, Size};
 use std::ffi::c_void;
 
+pub struct EventHandler {
+
+}
+
+impl EventHandler {
+    pub fn new() -> Self {
+        Self {}
+    }
+
+    pub fn event_handler(&mut self, event: crate::rtb_rs::Event) {
+        info!("Got event!");
+    }
+}
+
 pub struct Editor {
     window: Option<Window>,
     is_open: bool,
@@ -44,7 +58,11 @@ impl vst::editor::Editor for Editor {
             height: 1000,
         };
 
-        self.window = Some(Window::attach(parent, size, "derp", asdf));
+        let mut event_handler = EventHandler::new();
+
+        self.window = Some(Window::attach(parent, size, "derp", move |event: crate::rtb_rs::Event| {
+            event_handler.event_handler(event);
+        }));
         true
     }
 
@@ -54,6 +72,4 @@ impl vst::editor::Editor for Editor {
     }
 }
 
-fn asdf(event: crate::rtb_rs::Event) {
-    info!("Got event!");
-}
+
