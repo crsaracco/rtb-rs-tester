@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 vst = { git = "https://github.com/crsaracco/rust-vst.git", branch = "open-editor-return-1-for-success" }
-#rtb-rs = { git = "https://github.com/rust-dsp/rtb-rs.git" }
+#rtb-rs = { git = "https://github.com/crsaracco/rtb-rs.git", branch = "x11-update" }
 #vst = { path = "/home/crs/git/github/rust-vst/" }
 rtb-rs = { path = "/home/crs/git/rtb-rs/rtb-rs/" }
 log = "0.4"

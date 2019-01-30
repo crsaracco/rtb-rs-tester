@@ -1,12 +1,16 @@
-use log::*;
 use std::fs::File;
+use std::sync::Arc;
+
+use log::*;
 use vst::plugin::{Category, HostCallback, Info, Plugin};
 
 use crate::editor::Editor;
+use crate::parameters::Parameters;
 
 pub struct RtbrsTester {
     host: HostCallback,
     editor: Editor,
+    parameters: Arc<Parameters>,
 }
 
 impl Default for RtbrsTester {
@@ -28,9 +32,12 @@ impl Plugin for RtbrsTester {
         )])
         .unwrap();
 
+        let parameters = Arc::new(Parameters::new());
+
         Self {
             host,
-            editor: Editor::new(),
+            editor: Editor::new(parameters.clone()),
+            parameters: parameters.clone(),
         }
     }
 

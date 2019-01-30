@@ -1,22 +1,26 @@
 use log::*;
 use rtb_rs::window::{Window, Size};
 use std::ffi::c_void;
+use std::sync::Arc;
+
+use crate::parameters::Parameters;
+use crate::event_handler::EventHandler;
 
 pub struct Editor {
     window: Option<Window>,
+    parameters: Arc<Parameters>,
     is_open: bool,
 }
 
 impl Editor {
-    pub fn new() -> Self {
-        Self {
+    pub fn new(parameters: Arc<Parameters>) -> Self {
+        let editor = Self {
             window: None,
+            parameters,
             is_open: false,
-        }
-    }
+        };
 
-    fn event_handler(&mut self, event: crate::rtb_rs::Event) {
-        info!("Got event!");
+        editor
     }
 }
 
@@ -47,15 +51,13 @@ impl vst::editor::Editor for Editor {
             height: 1000,
         };
 
-        let handler = Box::new(|event: crate::rtb_rs::Event| {
-            self.event_handler(event);
-        });
+        let mut event_handler = Box::new(EventHandler::new(self.parameters.clone()));
 
         self.window = Some(Window::attach(
             parent,
             size,
             "derp",
-            handler
+            event_handler,
         ));
 
         true
