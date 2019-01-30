@@ -1,5 +1,4 @@
 use log::*;
-use rtb_rs::platform;
 use rtb_rs::window::{Window, Size};
 use std::ffi::c_void;
 
@@ -48,9 +47,16 @@ impl vst::editor::Editor for Editor {
             height: 1000,
         };
 
-        self.window = Some(Window::attach(parent, size, "derp", move |event: crate::rtb_rs::Event| {
+        let handler = Box::new(|event: crate::rtb_rs::Event| {
             self.event_handler(event);
-        }));
+        });
+
+        self.window = Some(Window::attach(
+            parent,
+            size,
+            "derp",
+            handler
+        ));
 
         true
     }
@@ -59,6 +65,4 @@ impl vst::editor::Editor for Editor {
         info!("Editor::is_open()");
         self.is_open
     }
-
-
 }
