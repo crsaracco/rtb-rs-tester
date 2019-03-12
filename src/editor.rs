@@ -51,7 +51,7 @@ impl vst::editor::Editor for Editor {
             height: 1000,
         };
 
-        let mut event_handler = Box::new(EventHandler::new(self.parameters.clone()));
+        let event_handler = |event: rtb_rs::Event| info!("Event: {:?}", event);
 
         self.window = Some(Window::attach(
             parent,
